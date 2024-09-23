@@ -7,7 +7,7 @@ import {
 import express from 'express'
 import { createServer } from 'node:http'
 import { Server as SocketIoServer } from 'socket.io'
-import { maxLobbyUsers } from './constants'
+import { lobbyLifespan, maxLobbyUsers } from './constants'
 import {
   lobbyData,
   triggerUpdateCurrentPrize,
@@ -48,9 +48,19 @@ app.post('/create-lobby', (req, res) => {
     })
   }
 
+  const expireTime = Date.now() + lobbyLifespan
+
+  setTimeout(() => {
+    lobbyData.delete(body.lobbyId)
+    for (const namespace of ['/lobby', '/control', '/screen']) {
+      socketIo.of(namespace).to(body.lobbyId).emit('error', 'Lobby expired')
+      socketIo.of(namespace).in(body.lobbyId).disconnectSockets()
+    }
+  }, lobbyLifespan)
+
   lobbyData.set(body.lobbyId, {
     lobbyId: body.lobbyId,
-    createTime: Date.now(),
+    expireTime,
     ownerUserId: userId,
     currentPrize: '',
     isRolling: false,
@@ -315,6 +325,7 @@ socketIo.of('/control').on('connection', (socket) => {
     isRolling: lobby.isRolling,
     onlineCount: lobby.onlineUsers.size,
     joinedCount: lobby.joinedUsers.size,
+    expireTime: lobby.expireTime,
   })
 
   socket.join(lobbyId)

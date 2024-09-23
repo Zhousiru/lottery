@@ -97,6 +97,7 @@ export function ControlPage() {
         <Label text="当前中奖用户 ID">{wsData.winner?.userId ?? '无'}</Label>
         <Label text="在线人数">{wsData.onlineCount}</Label>
         <Label text="参加人数">{wsData.joinedCount}</Label>
+        <Label text="大厅过期时间">{wsData.expireTime}</Label>
       </div>
 
       <div className="mx-auto mt-12 flex max-w-[250px] flex-col gap-2">

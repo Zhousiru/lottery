@@ -5,7 +5,7 @@ export interface WinnerInfo {
 
 export interface Lobby {
   lobbyId: string
-  createTime: number
+  expireTime: number
   ownerUserId: string
   currentPrize: string
   isRolling: boolean

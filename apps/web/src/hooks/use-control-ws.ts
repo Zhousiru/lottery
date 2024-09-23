@@ -1,3 +1,4 @@
+import { formatTimestamp } from '@/libs/utils/time'
 import { getUserId } from '@/libs/utils/user-id'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +13,8 @@ export function useControlWs(lobbyId: string) {
   const [isRolling, setIsRolling] = useState(false)
   const [onlineCount, setOnlineCount] = useState(0)
   const [joinedCount, setJoinedCount] = useState(0)
+
+  const [expireTime, setExpireTime] = useState('')
 
   const navigate = useNavigate()
 
@@ -44,6 +47,9 @@ export function useControlWs(lobbyId: string) {
       if (v.joinedCount !== undefined) {
         setJoinedCount(v.joinedCount)
       }
+      if (v.expireTime !== undefined) {
+        setExpireTime(formatTimestamp(v.expireTime))
+      }
     })
 
     return () => {
@@ -52,5 +58,5 @@ export function useControlWs(lobbyId: string) {
     }
   }, [lobbyId, navigate])
 
-  return { prize, winner, isRolling, onlineCount, joinedCount }
+  return { prize, winner, isRolling, onlineCount, joinedCount, expireTime }
 }
