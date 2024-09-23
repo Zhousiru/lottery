@@ -1,0 +1,12 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    environment:
+      - BACKEND_URL=http://backend:3000
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend

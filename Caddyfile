@@ -1,0 +1,16 @@
+http://0.0.0.0:80 {
+  handle_path /api/* {
+    reverse_proxy {$BACKEND_URL}
+  }
+
+  handle /socket.io/ {
+    reverse_proxy {$BACKEND_URL}
+  }
+
+  handle {
+    root * /static
+    file_server
+    try_files {path} /
+    encode gzip
+  }
+}

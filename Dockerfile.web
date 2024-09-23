@@ -1,0 +1,18 @@
+FROM node:20-slim AS build
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN corepack enable
+COPY . /repo
+WORKDIR /repo
+RUN pnpm install --frozen-lockfile
+RUN pnpm build:web
+
+
+FROM caddy:2-alpine
+
+COPY --from=build /repo/apps/web/dist /static
+COPY Caddyfile /etc/caddy/Caddyfile
+
+EXPOSE 80
