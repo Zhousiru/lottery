@@ -1,5 +1,6 @@
 import { getUserId } from '@/libs/utils/user-id'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
 export function useControlWs(lobbyId: string) {
@@ -12,6 +13,8 @@ export function useControlWs(lobbyId: string) {
   const [onlineCount, setOnlineCount] = useState(0)
   const [joinedCount, setJoinedCount] = useState(0)
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     const socket = io('/control', {
       query: {
@@ -21,8 +24,9 @@ export function useControlWs(lobbyId: string) {
     })
 
     socket.once('error', (v) => {
-      alert(v)
       socket.disconnect()
+      alert(v)
+      navigate('/', { replace: true })
     })
     socket.on('update', (v) => {
       if (v.currentPrize !== undefined) {
@@ -46,7 +50,7 @@ export function useControlWs(lobbyId: string) {
       socket.offAny()
       socket.disconnect()
     }
-  })
+  }, [lobbyId, navigate])
 
   return { prize, winner, isRolling, onlineCount, joinedCount }
 }

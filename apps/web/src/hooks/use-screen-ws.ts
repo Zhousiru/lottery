@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
 export function useScreenWs(lobbyId: string) {
   const [num, setNum] = useState<number | null>(null)
   const [isRolling, setIsRolling] = useState<boolean>(false)
   const [onlineCount, setOnlineCount] = useState<number>(0)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const socket = io('/screen', {
@@ -14,8 +17,9 @@ export function useScreenWs(lobbyId: string) {
     })
 
     socket.once('error', (v) => {
-      alert(v)
       socket.disconnect()
+      alert(v)
+      navigate('/', { replace: true })
     })
     socket.on('update', (v) => {
       if (v.currentWinnerNum !== undefined) {
@@ -33,7 +37,7 @@ export function useScreenWs(lobbyId: string) {
       socket.offAny()
       socket.disconnect()
     }
-  })
+  }, [lobbyId, navigate])
 
   return { num, isRolling, onlineCount }
 }

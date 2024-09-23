@@ -1,5 +1,6 @@
 import { getUserId } from '@/libs/utils/user-id'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
 export function useLobbyWs(lobbyId: string) {
@@ -7,6 +8,8 @@ export function useLobbyWs(lobbyId: string) {
   const [winnerNum, setWinnerNum] = useState<number | null>(null)
   const [prize, setPrize] = useState<string>('')
   const [isRolling, setIsRolling] = useState(false)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const socket = io('/lobby', {
@@ -18,8 +21,9 @@ export function useLobbyWs(lobbyId: string) {
     })
 
     socket.once('error', (v) => {
-      alert(v)
       socket.disconnect()
+      alert(v)
+      navigate('/', { replace: true })
     })
     socket.on('update', (v) => {
       console.log(v)
@@ -41,7 +45,7 @@ export function useLobbyWs(lobbyId: string) {
       socket.offAny()
       socket.disconnect()
     }
-  })
+  }, [lobbyId, navigate])
 
   return { userNum, winnerNum, prize, isRolling }
 }

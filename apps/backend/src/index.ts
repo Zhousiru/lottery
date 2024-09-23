@@ -148,6 +148,11 @@ app.post('/start-rolling', (req, res) => {
 
   lobby.isRolling = true
   triggerUpdateIsRolling(socketIo, body.lobbyId)
+
+  return $respondWith(res, {
+    success: true,
+    payload: null,
+  })
 })
 
 app.post('/stop-rolling', (req, res) => {
@@ -173,6 +178,13 @@ app.post('/stop-rolling', (req, res) => {
     })
   }
 
+  if (lobby.onlineUsers.size === 0) {
+    return $respondWith(res, {
+      success: false,
+      msg: 'Nobody online',
+    })
+  }
+
   const randomIndex = Math.floor(Math.random() * lobby.onlineUsers.size)
   const winnerUserId = [...lobby.onlineUsers][randomIndex][0]
   const winnerUserNum = lobby.joinedUsers.get(winnerUserId)!
@@ -184,6 +196,11 @@ app.post('/stop-rolling', (req, res) => {
   }
   triggerUpdateIsRolling(socketIo, body.lobbyId)
   triggerUpdateCurrentWinner(socketIo, body.lobbyId)
+
+  return $respondWith(res, {
+    success: true,
+    payload: null,
+  })
 })
 
 app.post('/clear-winner', (req, res) => {
@@ -211,6 +228,11 @@ app.post('/clear-winner', (req, res) => {
 
   lobby.currentWinner = null
   triggerUpdateCurrentWinner(socketIo, body.lobbyId)
+
+  return $respondWith(res, {
+    success: true,
+    payload: null,
+  })
 })
 
 socketIo.of('/lobby').on('connection', (socket) => {

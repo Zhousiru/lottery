@@ -39,7 +39,11 @@ export function LobbyPage() {
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-white p-8 shadow-lg">
-          <div className="text-6xl font-light">{wsData.userNum}</div>
+          {wsData.userNum ? (
+            <div className="text-6xl font-light">{wsData.userNum}</div>
+          ) : (
+            <div className="text-3xl font-light">取号中</div>
+          )}
 
           <div
             className={cn(
