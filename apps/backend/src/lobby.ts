@@ -72,4 +72,7 @@ export function triggerUpdateJoinedCount(io: SocketIoServer, lobbyId: string) {
   io.of('/control').to(lobbyId).emit('update', {
     joinedCount: lobby.joinedUsers.size,
   })
+  io.of('/screen').to(lobbyId).emit('update', {
+    joinedCount: lobby.joinedUsers.size,
+  })
 }

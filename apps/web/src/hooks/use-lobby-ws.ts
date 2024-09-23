@@ -26,7 +26,6 @@ export function useLobbyWs(lobbyId: string) {
       navigate('/', { replace: true })
     })
     socket.on('update', (v) => {
-      console.log(v)
       if (v.userNum !== undefined) {
         setUserNum(v.userNum)
       }

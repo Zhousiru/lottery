@@ -16,7 +16,7 @@ export function LobbyPage() {
     wsData.userNum && wsData.winnerNum && wsData.userNum === wsData.winnerNum
 
   return (
-    <div className="mx-auto mt-[10vh] max-w-screen-sm p-8">
+    <div className="mx-auto mt-[5vh] max-w-screen-sm p-8">
       <Logo />
 
       <div>
@@ -31,11 +31,11 @@ export function LobbyPage() {
       <div className="relative mx-auto mt-12 h-[250px] max-w-[250px]">
         <div
           className={cn(
-            'pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden opacity-0 blur-xl',
+            'pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden opacity-0 blur-xl transition duration-500',
             isWinner && 'pointer-events-auto opacity-100',
           )}
         >
-          <div className="animate-spin-slow h-[350px] w-[350px] flex-shrink-0 bg-gradient-to-r from-yellow-300 via-red-300 to-purple-300"></div>
+          <div className="animate-spin-slow aspect-square h-[350px] flex-shrink-0 bg-gradient-to-r from-yellow-300 via-red-300 to-purple-300"></div>
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-white p-8 shadow-lg">

@@ -298,6 +298,7 @@ socketIo.of('/screen').on('connection', (socket) => {
     currentWinnerNum: lobby.currentWinner?.num ?? null,
     onlineCount: lobby.onlineUsers.size,
     isRolling: lobby.isRolling,
+    joinedCount: lobby.joinedUsers.size,
   })
 
   socket.join(lobbyId)

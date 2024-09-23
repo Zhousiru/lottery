@@ -71,7 +71,7 @@ export function HomePage() {
   }
 
   return (
-    <div className="mx-auto mt-[10vh] max-w-screen-sm p-8">
+    <div className="mx-auto mt-[5vh] max-w-screen-sm p-8">
       <Logo />
 
       <form
@@ -83,13 +83,13 @@ export function HomePage() {
       >
         <input
           ref={inputRef}
-          className="h-[50px] w-[300px] rounded border border-black p-2 text-center text-2xl shadow outline-none"
+          className="h-[50px] max-w-[300px] rounded border border-black p-2 text-center text-2xl shadow outline-none"
           placeholder="大厅号"
           required
           disabled={loading}
         />
         <Button
-          className="h-[50px] w-[50px] p-0"
+          className="h-[50px] w-[50px] flex-shrink-0 p-0"
           type="submit"
           disabled={loading}
         >

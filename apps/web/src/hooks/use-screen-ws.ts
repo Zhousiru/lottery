@@ -6,6 +6,7 @@ export function useScreenWs(lobbyId: string) {
   const [num, setNum] = useState<number | null>(null)
   const [isRolling, setIsRolling] = useState<boolean>(false)
   const [onlineCount, setOnlineCount] = useState<number>(0)
+  const [joinedCount, setJoinedCount] = useState<number>(0)
 
   const navigate = useNavigate()
 
@@ -31,6 +32,12 @@ export function useScreenWs(lobbyId: string) {
       if (v.onlineCount !== undefined) {
         setOnlineCount(v.onlineCount)
       }
+      if (v.onlineCount !== undefined) {
+        setOnlineCount(v.onlineCount)
+      }
+      if (v.joinedCount !== undefined) {
+        setJoinedCount(v.joinedCount)
+      }
     })
 
     return () => {
@@ -39,5 +46,5 @@ export function useScreenWs(lobbyId: string) {
     }
   }, [lobbyId, navigate])
 
-  return { num, isRolling, onlineCount }
+  return { num, isRolling, onlineCount, joinedCount }
 }
