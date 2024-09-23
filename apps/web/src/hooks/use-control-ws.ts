@@ -1,0 +1,52 @@
+import { getUserId } from '@/libs/utils/user-id'
+import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
+
+export function useControlWs(lobbyId: string) {
+  const [prize, setPrize] = useState<string>('')
+  const [winner, setWinner] = useState<{
+    userId: string
+    num: number
+  } | null>(null)
+  const [isRolling, setIsRolling] = useState(false)
+  const [onlineCount, setOnlineCount] = useState(0)
+  const [joinedCount, setJoinedCount] = useState(0)
+
+  useEffect(() => {
+    const socket = io('/control', {
+      query: {
+        lobbyId,
+        userId: getUserId(),
+      },
+    })
+
+    socket.once('error', (v) => {
+      alert(v)
+      socket.disconnect()
+    })
+    socket.on('update', (v) => {
+      if (v.currentPrize !== undefined) {
+        setPrize(v.currentPrize)
+      }
+      if (v.currentWinner !== undefined) {
+        setWinner(v.currentWinner)
+      }
+      if (v.isRolling !== undefined) {
+        setIsRolling(v.isRolling)
+      }
+      if (v.onlineCount !== undefined) {
+        setOnlineCount(v.onlineCount)
+      }
+      if (v.joinedCount !== undefined) {
+        setJoinedCount(v.joinedCount)
+      }
+    })
+
+    return () => {
+      socket.offAny()
+      socket.disconnect()
+    }
+  })
+
+  return { prize, winner, isRolling, onlineCount, joinedCount }
+}
