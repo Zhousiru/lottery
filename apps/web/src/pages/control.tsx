@@ -2,6 +2,7 @@ import { Button } from '@/components/button'
 import { Label } from '@/components/label'
 import { Logo } from '@/components/logo'
 import { useControlWs } from '@/hooks/use-control-ws'
+import { cn } from '@/libs/utils/cn'
 import { $fetch } from '@/libs/utils/fetch'
 import {
   schemaClearWinner,
@@ -15,8 +16,16 @@ import {
   IconPlayerStop,
   IconRestore,
 } from '@tabler/icons-react'
+import { ComponentPropsWithRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
+
+export function FixedHeightRow({
+  className,
+  ...props
+}: ComponentPropsWithRef<'div'>) {
+  return <div className={cn('h-6', className)} {...props} />
+}
 
 export function ControlPage() {
   const { id: lobbyId } = useParams()
@@ -92,12 +101,24 @@ export function ControlPage() {
       <Logo />
 
       <div className="mt-12 flex flex-col gap-2">
-        <Label text="抽取奖品">{wsData.prize || '未设置'}</Label>
-        <Label text="当前中奖号码">{wsData.winner?.num ?? '无'}</Label>
-        <Label text="当前中奖用户 ID">{wsData.winner?.userId ?? '无'}</Label>
-        <Label text="在线人数">{wsData.onlineCount}</Label>
-        <Label text="参加人数">{wsData.joinedCount}</Label>
-        <Label text="大厅过期时间">{wsData.expireTime}</Label>
+        <Label text="抽取奖品">
+          <FixedHeightRow>{wsData.prize || '未设置'}</FixedHeightRow>
+        </Label>
+        <Label text="当前中奖号码">
+          <FixedHeightRow>{wsData.winner?.num ?? '无'}</FixedHeightRow>
+        </Label>
+        <Label text="当前中奖用户 ID">
+          <FixedHeightRow>{wsData.winner?.userId ?? '无'}</FixedHeightRow>
+        </Label>
+        <Label text="在线人数">
+          <FixedHeightRow>{wsData.onlineCount}</FixedHeightRow>
+        </Label>
+        <Label text="参加人数">
+          <FixedHeightRow>{wsData.joinedCount}</FixedHeightRow>
+        </Label>
+        <Label text="大厅过期时间">
+          <FixedHeightRow>{wsData.expireTime}</FixedHeightRow>
+        </Label>
       </div>
 
       <div className="mx-auto mt-12 flex max-w-[250px] flex-col gap-2">
