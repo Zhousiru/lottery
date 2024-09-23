@@ -1,4 +1,4 @@
-http://0.0.0.0:80 {
+:80 {
   handle_path /api/* {
     reverse_proxy {$BACKEND_URL}
   }
