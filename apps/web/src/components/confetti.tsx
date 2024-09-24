@@ -26,6 +26,7 @@ export const Confetti = forwardRef<ConfettiRef>(function Confetti(_, ref) {
         confetti?.reset()
         setIsStart(false)
       }}
+      style={{ position: 'fixed' }}
     />
   )
 })
