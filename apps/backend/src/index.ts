@@ -204,8 +204,8 @@ app.post('/stop-rolling', (req, res) => {
     userId: winnerUserId,
     num: winnerUserNum,
   }
-  triggerUpdateIsRolling(socketIo, body.lobbyId)
   triggerUpdateCurrentWinner(socketIo, body.lobbyId)
+  triggerUpdateIsRolling(socketIo, body.lobbyId)
 
   return $respondWith(res, {
     success: true,
