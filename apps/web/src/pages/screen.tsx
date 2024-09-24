@@ -1,3 +1,4 @@
+import { Confetti, ConfettiRef } from '@/components/confetti'
 import { useScreenWs } from '@/hooks/use-screen-ws'
 import { cn } from '@/libs/utils/cn'
 import { useEffect, useRef } from 'react'
@@ -11,6 +12,7 @@ export function ScreenPage() {
 
   const wsData = useScreenWs(lobbyId)
   const animationTextRef = useRef<HTMLDivElement>(null)
+  const confettiRef = useRef<ConfettiRef>(null)
 
   useEffect(() => {
     if (!wsData.isRolling) {
@@ -31,6 +33,10 @@ export function ScreenPage() {
       cancelAnimationFrame(frameId)
     }
   }, [wsData.isRolling, wsData.joinedCount])
+
+  if (wsData.num) {
+    confettiRef.current!.trigger()
+  }
 
   return (
     <>
@@ -68,6 +74,7 @@ export function ScreenPage() {
           </div>
         </div>
       </div>
+      <Confetti ref={confettiRef} />
     </>
   )
 }
