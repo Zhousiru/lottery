@@ -255,12 +255,13 @@ socketIo.of('/lobby').on('connection', (socket) => {
     return
   }
 
-  const users = lobby.joinedUsers
-  if (users.size >= maxLobbyUsers) {
+  if (lobby.onlineUsers.size >= maxLobbyUsers) {
     socket.emit('error', 'Lobby is full')
     socket.disconnect()
     return
   }
+
+  const users = lobby.joinedUsers
   let userNum = users.get(userId)
   if (!userNum) {
     userNum = users.size + 1
