@@ -3,6 +3,7 @@ import { useScreenWs } from '@/hooks/use-screen-ws'
 import { cn } from '@/libs/utils/cn'
 import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
+import { useRafLoop } from 'react-use'
 
 export function ScreenPage() {
   const { id: lobbyId } = useParams()
@@ -14,29 +15,24 @@ export function ScreenPage() {
   const animationTextRef = useRef<HTMLDivElement>(null)
   const confettiRef = useRef<ConfettiRef>(null)
 
+  const [stopRollingText, startRollingText] = useRafLoop(() => {
+    const randomValue = Math.floor(Math.random() * wsData.joinedCount) + 1
+    animationTextRef.current!.textContent = randomValue.toString()
+  })
+
   useEffect(() => {
-    if (!wsData.isRolling) {
-      return
+    if (wsData.isRolling) {
+      startRollingText()
+    } else {
+      stopRollingText()
     }
+  }, [startRollingText, stopRollingText, wsData.isRolling])
 
-    let frameId: number
-
-    function animate() {
-      const randomValue = Math.floor(Math.random() * wsData.joinedCount) + 1
-      animationTextRef.current!.textContent = randomValue.toString()
-      frameId = requestAnimationFrame(animate)
+  useEffect(() => {
+    if (wsData.num) {
+      confettiRef.current!.trigger()
     }
-
-    frameId = requestAnimationFrame(animate)
-
-    return () => {
-      cancelAnimationFrame(frameId)
-    }
-  }, [wsData.isRolling, wsData.joinedCount])
-
-  if (wsData.num) {
-    confettiRef.current!.trigger()
-  }
+  }, [wsData.num])
 
   return (
     <>

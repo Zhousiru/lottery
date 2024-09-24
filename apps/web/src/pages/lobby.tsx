@@ -3,7 +3,7 @@ import { Logo } from '@/components/logo'
 import { useLobbyWs } from '@/hooks/use-lobby-ws'
 import { cn } from '@/libs/utils/cn'
 import { IconGift, IconHourglass, IconMoodSad } from '@tabler/icons-react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 export function LobbyPage() {
@@ -18,9 +18,11 @@ export function LobbyPage() {
   const isWinner =
     wsData.userNum && wsData.winnerNum && wsData.userNum === wsData.winnerNum
 
-  if (isWinner) {
-    confettiRef.current!.trigger()
-  }
+  useEffect(() => {
+    if (isWinner) {
+      confettiRef.current!.trigger()
+    }
+  }, [isWinner])
 
   return (
     <div className="mx-auto mt-[5vh] max-w-screen-sm p-8">
