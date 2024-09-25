@@ -4,7 +4,7 @@
 
 ## Preview
 
-[lott.mofu.app](https://lott.mofu.app)
+[lott.mofu.app](https://lott.mofu.app)（此部署限制单 Lobby 最多 2000 人在线）
 
 <p align="center">
   <img src="docs/home.webp" width="50%">
